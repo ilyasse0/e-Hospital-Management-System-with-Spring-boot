@@ -1,61 +1,89 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+xmlns=layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="template1.html"
+>
 <head>
     <meta charset='utf-8'>
-   
-    <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/css/bootstrap.min.css">
+
     <title>Page Title</title>
     
+    <style>
+        /* Custom CSS for additional styling */
+        .container {
+            max-width: 800px;
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h1 class="mb-4">Liste des Patients</h1>
-        <form method="get" th:action="@{index}">
-            <label for="">keyword</label>
-            <input type="text" name="keyword" id="" th:value="${keyword}">
-            <button type="submit" class="btn btn-info">Search</button>
-        </form>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Date de Naissance</th>
-                    <th scope="col">Malade</th>
-                    <th scope="col">Score</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Iterate over the list of patients -->
-                <tr th:each="p : ${listePatient}">
-                    <td th:text="${p.id}"></td>
-                    <td th:text="${p.nom}"></td>
-                    <td th:text="${p.dateNaissance}"></td>
-                    <td th:text="${p.malade}"></td>
-                    <td th:text="${p.score}"></td>
-                </tr>
-            </tbody>
-        </table>
 
-        <ul class="nav nav-pills">
-            <li  th:each="page,status:${pages}">
-                <a  th:href="@{/index(page=${status.index})}" 
-                th:class="${currentPage==status.index?'btn btn-info ms-1' : 'btn btn-outline-info ms-1'}"
-                th:text="${status.index}"></a>
+    <div layout:fragment="content">
 
-            </li>
-        </ul>
+
+
+        <div class="container mt-5">
+            <h1 class="mb-4">Liste des Patients</h1>
+            <form method="get" th:action="@{index}" class="mb-4">
+                <div class="input-group">
+                    <input type="text" name="keyword" class="form-control" placeholder="Keyword" th:value="${keyword}">
+                    <button type="submit" class="btn btn-info"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                      </svg> </button>
+                </div>
+            </form>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Date de Naissance</th>
+                        <th scope="col">Malade</th>
+                        <th scope="col">Score</th>
+                        <th scope="col"></th> <!-- Empty header for delete button -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Iterate over the list of patients -->
+                    <tr th:each="p : ${listePatient}">
+                        <td th:text="${p.id}"></td>
+                        <td th:text="${p.nom}"></td>
+                        <td th:text="${p.dateNaissance}"></td>
+                        <td th:text="${p.malade}"></td>
+                        <td th:text="${p.score}"></td>
+                        <td>
+                            <a onclick="javascript:return confirm('are u sure ?')" th:href="@{delete(id=${p.id})}" class="btn btn-danger btn-sm"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                              </svg></a>
+    
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+    
+            <ul class="pagination">
+                <!-- Pagination links -->
+                <li th:each="page,status:${pages}" class="page-item">
+                    <a th:href="@{/index(page=${status.index})}" class="page-link"
+                       th:class="${currentPage==status.index?'active':''}"
+                       th:text="${status.index}"></a>
+                </li>
+            </ul>
+        </div>
+    
+        <!-- Bootstrap Bundle with Popper -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"
+            integrity="sha384-3VP2G0iGcHAbB5Xje2LcUMU89OLbl0xV6Wy1v4CXTmRc3Z7XaPM3YdVKjt8Dk9HN"
+            crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.min.js"
+            integrity="sha384-gY2AT2oiAnZlK4flsiUxRyC+P5xghWrdeMDzcP+TDGJ2sZ6gM8LTc77ag0I9JLb6"
+            crossorigin="anonymous"></script>
+
+
     </div>
-
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"
-        integrity="sha384-3VP2G0iGcHAbB5Xje2LcUMU89OLbl0xV6Wy1v4CXTmRc3Z7XaPM3YdVKjt8Dk9HN"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"
-        integrity="sha384-+PB1xkoqCVUrl9nV+P9bB0Q5PuAy+y/JhZptfJ5ndLl+c+B6FUgKlP6wFJz0/2WW"
-        crossorigin="anonymous"></script>
+    
 </body>
-
 </html>

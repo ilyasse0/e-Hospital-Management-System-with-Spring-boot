@@ -41,8 +41,8 @@ public class ApphospitalApplication implements CommandLineRunner{
 		.malade(true)
 		.build();
 
-		patientRepository.save(patient);
-		patientRepository.save(patient3);
+		//patientRepository.save(patient);
+		//patientRepository.save(patient3);
 		
 
 
