@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset='utf-8'>
+   
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <title>Page Title</title>
+    
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Liste des Patients</h1>
+        <form method="get" th:action="@{index}">
+            <label for="">keyword</label>
+            <input type="text" name="keyword" id="" th:value="${keyword}">
+            <button type="submit" class="btn btn-info">Search</button>
+        </form>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Date de Naissance</th>
+                    <th scope="col">Malade</th>
+                    <th scope="col">Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Iterate over the list of patients -->
+                <tr th:each="p : ${listePatient}">
+                    <td th:text="${p.id}"></td>
+                    <td th:text="${p.nom}"></td>
+                    <td th:text="${p.dateNaissance}"></td>
+                    <td th:text="${p.malade}"></td>
+                    <td th:text="${p.score}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <ul class="nav nav-pills">
+            <li  th:each="page,status:${pages}">
+                <a  th:href="@{/index(page=${status.index})}" 
+                th:class="${currentPage==status.index?'btn btn-info ms-1' : 'btn btn-outline-info ms-1'}"
+                th:text="${status.index}"></a>
+
+            </li>
+        </ul>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"
+        integrity="sha384-3VP2G0iGcHAbB5Xje2LcUMU89OLbl0xV6Wy1v4CXTmRc3Z7XaPM3YdVKjt8Dk9HN"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"
+        integrity="sha384-+PB1xkoqCVUrl9nV+P9bB0Q5PuAy+y/JhZptfJ5ndLl+c+B6FUgKlP6wFJz0/2WW"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
