@@ -17,14 +17,23 @@ layout:decorate="template1.html"
         <h1 class="mb-4">New Patient Form</h1>
         <form th:action="@{/admin/savePatient}" method="post">
             <div class="row g-3">
+
+                <div class="col-md-6">
+                    <label for="id" class="form-label">Id</label>:
+                    <label for="" th:text="${patient.id}"></label>
+                    <input type="hidden" name="id" id="id" class="form-control" th:value="${patient.id}">
+                   
+                </div>
+
+
                 <div class="col-md-6">
                     <label for="nom" class="form-label">Nom</label>
-                    <input type="text" name="nom" id="nom" class="form-control" required th:value="${patient.nom}">
+                    <input type="text" name="nom" id="nom" class="form-control" th:value="${patient.nom}">
                     <span class="text-danger" th:errors="${patient.nom}"></span>
                 </div>
                 <div class="col-md-6">
                     <label for="dateNaissance" class="form-label">Date de Naissance</label>
-                    <input type="date" name="dateNaissance" id="dateNaissance" class="form-control" required th:value="${patient.dateNaissance}">
+                    <input type="date" name="dateNaissance" id="dateNaissance" class="form-control"  th:value="${patient.dateNaissance}">
                     <span class="text-danger" th:errors="${patient.dateNaissance}"></span>
                 </div>
             </div>

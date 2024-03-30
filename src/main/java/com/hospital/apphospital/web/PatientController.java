@@ -24,6 +24,11 @@ public class PatientController {
     private PatientRepository patientRepository;
 
 
+
+    @GetMapping("/")
+    public String home(){
+        return "redirect:/index";
+    }
     
     @GetMapping("/index")
     public String index(Model model , 
@@ -40,7 +45,7 @@ public class PatientController {
            return "patients";
     }
 
-    @GetMapping("/delete")
+    @GetMapping("/admin/delete")
     public String  deletePatient (Long id ){
         patientRepository.deleteById(id);
         return "redirect:/index";
@@ -48,7 +53,7 @@ public class PatientController {
 
 
 
-    @GetMapping("/formPatient")
+    @GetMapping("/admin/formPatient")
     public String formPatient( Model model){
         model.addAttribute("patient", new Patient());
       //  patientRepository.save(p);
@@ -56,15 +61,29 @@ public class PatientController {
     }
 
 
-    @PostMapping("/savePatient")
+    @PostMapping("/admin/savePatient")
     public String  savePatient(@Valid Patient p , BindingResult bindResult){
         if(bindResult.hasErrors()){
             return "formPatient";
         }else{
         patientRepository.save(p);
-        return "redirect:/index";
+        return "redirect:/index?keyword="+p.getNom();
     }
 
     }
+
+
+    @GetMapping("/admin/editPatient")
+    public String editPatient(Model model , @RequestParam(name="id") Long id){
+        Patient patient = patientRepository.findById(id).get();
+        if (patient!=null) {
+            model.addAttribute("patient" ,  patient);
+        }
+      
+
+
+        return "editPatient";
+    }
+
 
 }
